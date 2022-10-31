@@ -13,12 +13,12 @@ class Api::V1::ApplicationsController < ApplicationController
         json_response(@application, :created)
     end
 
-    # GET /api/v1/applications/:access_token
+    # GET /api/v1/applications/:app_token
     def show
         json_response(@application)
     end
 
-    # PUT /api/v1/applications/:access_token
+    # PUT /api/v1/applications/:app_token
     def update
         @application.update!(application_params)
         head :no_content
@@ -31,6 +31,6 @@ class Api::V1::ApplicationsController < ApplicationController
     end
 
     def set_application
-        @application = Application.find_by!(access_token: params[:access_token])
+        @application = Application.find_by!(app_token: params[:app_token])
     end
 end

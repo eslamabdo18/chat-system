@@ -13,11 +13,11 @@
 ActiveRecord::Schema[7.0].define(version: 2022_10_30_201423) do
   create_table "applications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.string "access_token"
+    t.string "app_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "chat_count"
-    t.index ["access_token"], name: "index_applications_on_access_token", unique: true
+    t.index ["app_token"], name: "index_applications_on_app_token", unique: true
   end
 
   create_table "chats", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

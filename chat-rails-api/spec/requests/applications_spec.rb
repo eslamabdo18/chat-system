@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Applications", type: :request do
   # initialize test data
   let!(:applications) { create_list(:application, 10) }
-  let(:app_access_token) { applications.first.access_token }
+  let(:app_app_token) { applications.first.app_token }
 
   describe "GET /api/v1/applications" do
     # make HTTP get request before each example
@@ -19,15 +19,15 @@ RSpec.describe "Applications", type: :request do
     end
   end
 
-  # Test suite for GET /appliccations/:access_token
-  describe 'GET /api/v1/applications/:access_token' do
-    before { get "/api/v1/applications/#{app_access_token}" }
+  # Test suite for GET /appliccations/:app_token
+  describe 'GET /api/v1/applications/:app_token' do
+    before { get "/api/v1/applications/#{app_app_token}" }
 
     context 'when the record exists' do
 
       it 'returns the application' do
         expect(json).not_to be_empty
-        expect(json['access_token']).to eq(app_access_token)
+        expect(json['app_token']).to eq(app_app_token)
       end
 
       it 'id feild dosent return' do
@@ -41,7 +41,7 @@ RSpec.describe "Applications", type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:app_access_token) { 'jdjjdmadmweeqk' }
+      let(:app_app_token) { 'jdjjdmadmweeqk' }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
