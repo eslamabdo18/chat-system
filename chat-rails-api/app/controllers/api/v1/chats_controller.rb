@@ -1,5 +1,7 @@
 class Api::V1::ChatsController < ApplicationController
     before_action :set_application, only: [:show, :index]
+
+    # GET /api/v1/applications/:app_token/chats
     def index
         @chats = @application.chats.all
         json_response(@chats)
