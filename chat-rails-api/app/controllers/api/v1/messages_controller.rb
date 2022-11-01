@@ -1,15 +1,17 @@
-class MessagesController < ApplicationController
-    before_action :set_chat, only: [:show, :index]
-
+class Api::V1::MessagesController < ApplicationController
+    # before_action :set_application
+    before_action :set_chat
+    
     #GET /api/v1/applications/:app_token/chats/:number/messages
     def index
       @messages = @chat.messages.all
       json_response(@messages)
-    
+    end
     #GET /api/v1/applications/:app_token/chats/:number/messages/:number
     def show
       @message = @chat.messages.find_by!(number:message_params[:number])
-    
+      json_response(@message)
+    end
 
     private
     
@@ -17,7 +19,7 @@ class MessagesController < ApplicationController
         params.permit(:number)
     end
     def set_chat
-        @application = Application.find_by!(app_token:params[:application_app_token])
-        @chat = @application.chats.find_by!(number:params[:chat_number])
+      @application = Application.find_by!(app_token:params[:application_app_token])
+      @chat = @application.chats.find_by!(number:params[:chat_number])
     end
 end
