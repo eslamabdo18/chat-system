@@ -11,15 +11,8 @@ func main() {
 	viper.ReadInConfig()
 
 	port := viper.Get("PORT").(string)
-	// redisChatQ := viper.Get("REDIS_CHAT_Q").(string)
-	r := gin.Default()
 
-	// r.GET("/", func(c *gin.Context) {
-	// 	c.JSON(200, gin.H{
-	// 		"port":      port,
-	// 		"chat queu": redisChatQ,
-	// 	})
-	// })
+	r := gin.Default()
 
 	chats.RegisterRoutes(r)
 

@@ -60,7 +60,9 @@ func GetChatNumber(token string) (int64, error) {
 			defer lock.Unlock()
 			return -1, err
 		}
+		log.Println(key)
 		client.Set(key, res.ChatCount, 1)
+
 	}
 	nextNum, err := client.Incr(key).Result()
 	defer lock.Unlock()
@@ -72,7 +74,7 @@ func GetChatNumber(token string) (int64, error) {
 
 func GetChatsCount(appToken string) (applicationResponse, error) {
 	var resp applicationResponse
-	url := viper.Get("CHAT_APP_END_POINT").(string) + "api/v1/applications" + appToken
+	url := viper.Get("CHAT_APP_END_POINT").(string) + "api/v1/applications/" + appToken
 	r, err := req.Get(url)
 	if err != nil {
 		return resp, err
@@ -88,9 +90,9 @@ func AddChat(c *gin.Context) {
 	log.Println("the token is" + token)
 
 	// log.Println("redis" + redis)
-	key := "CHAT_" + token
+	// key := "CHAT_" + token
 
-	nextNum, err := GetChatNumber(key)
+	nextNum, err := GetChatNumber(token)
 	log.Println(err)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
