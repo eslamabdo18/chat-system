@@ -108,6 +108,6 @@ func AddChat(c *gin.Context) {
 	}
 	resp := chatResponse{Number: nextNum, AppToken: token}
 
-	c.Bind(&resp)
+	// c.Bind(&resp)
 	c.JSON(http.StatusCreated, resp)
 }

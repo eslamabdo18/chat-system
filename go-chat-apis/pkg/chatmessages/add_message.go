@@ -74,9 +74,6 @@ func GetMsgNumber(token string, chatNumber string) (int64, error) {
 
 func GetChat(appToken string, chatNumber string) (chatResponse, error) {
 	var resp chatResponse
-
-	// url := strings.Replace(configs.AppEndpoint+configs.MessagesRoute, "{access_token}", accessToken, 1)
-	// url = strings.Replace(url, "{chat_number}", chatNumber, 1)
 	url := viper.Get("CHAT_APP_END_POINT").(string) + "api/v1/applications/" + appToken + "/chats/" + chatNumber
 	r, err := req.Get(url)
 	if err != nil {
@@ -88,7 +85,6 @@ func GetChat(appToken string, chatNumber string) (chatResponse, error) {
 }
 
 func AddMessage(c *gin.Context) {
-	// body := AddChatRequestBody{}
 	token := c.Param("app_token")
 	chatNumber := c.Param("chat_number")
 	var messageInput messageRequestInput
@@ -116,6 +112,5 @@ func AddMessage(c *gin.Context) {
 	chatNumInt64, _ := strconv.ParseInt(chatNumber, 10, 64)
 	resp := messageResponse{Number: nextNum, ChatNumber: chatNumInt64, AppToken: token}
 
-	c.Bind(&resp)
 	c.JSON(http.StatusCreated, resp)
 }
