@@ -5,7 +5,11 @@ Rails.application.routes.draw do
       mount Sidekiq::Web => "/sidekiq"
       resources :applications, param: :app_token, only: [:index, :show, :create, :update] do
         resources :chats, param: :number, only: [:index, :show] do 
-          resources :messages, param: :number, only: [:index, :show]
+          resources :messages, param: :number, only: [:index, :show] do
+            collection do
+              get :search
+            end
+          end
         end
       end
     end

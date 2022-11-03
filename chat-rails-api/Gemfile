@@ -18,6 +18,9 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails'
 gem 'redis-rack-cache'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'searchkick'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 

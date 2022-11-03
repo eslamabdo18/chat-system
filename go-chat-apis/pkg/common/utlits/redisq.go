@@ -16,7 +16,7 @@ func Push(queue string, class string, args ...string) error {
 		Class: class,
 		Args:  args,
 		Queue: queue,
-		Retry: true,
+		Retry: false,
 	}
 
 	client, err := GetRedisClient()
