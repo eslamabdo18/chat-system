@@ -15,6 +15,7 @@ class Api::V1::MessagesController < ApplicationController
 
     def search
       # Message.import(force: true)
+      puts 'start search'
       res = Message.search(params[:query], fields: [:body],where: {chat_id: [@chat.id]})
       json_response(res.each { |r| })
       # json_response(Message.search(params[:query], @chat.id))

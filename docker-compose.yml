@@ -1,0 +1,72 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    environment:
+      MYSQL_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    
+  redis:
+    image: redis
+    command: redis-server
+    environment:
+      REDIS_HOST: redis
+    expose:
+      - "6379"
+    volumes:
+      - 'redis:/data'
+
+  # sidekiq:
+  #   build: ./chat-rails-api
+  #   command: bundle exec sidekiq -C config/sidekiq.yml
+  #   links:
+  #     - db
+  #     - redis
+  #   volumes:
+  #     - .:/sidekiq
+  
+  elasticsearch:
+    image: elasticsearch:8.2.2
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    expose:
+      - "9200"
+
+  chat-rails-api:
+    build: ./chat-rails-api
+    volumes:
+      - .:/chat-rails-api
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+
+  go-chat-apis:
+    build: ./go-chat-apis
+    command: bash -c "go run cmd/main.go"
+    depends_on:
+      - "redis"
+    volumes:
+      - ".:/go-chat-apis"
+    ports:
+      - "8080:8080"
+  
+volumes:
+  my-datavolume:
+  redis:
+  es_data:
+    driver: local
+# networks:
+#   elastic:
+#     name: elastic
+#     driver: bridge

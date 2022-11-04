@@ -33,6 +33,8 @@ func GetChatNumber(token string) (int64, error) {
 	key := viper.Get("CHAT_NUM_REDIS_KEY").(string) + token
 	// get the redis client
 	client, err := utlits.GetRedisClient()
+
+	log.Println("redis client", client)
 	// check if the client sussfully created
 	if err != nil {
 		// c.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -42,7 +44,7 @@ func GetChatNumber(token string) (int64, error) {
 	// the lock will lock one of them to avoid the race
 	lock, err := lock.Obtain(client, key+"_LOCK", nil)
 	if err != nil {
-		defer lock.Unlock()
+		// defer lock.Unlock()
 		return -1, err
 	}
 	lock.Lock()
