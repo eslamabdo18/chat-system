@@ -41,6 +41,7 @@ services:
 
   chat-rails-api:
     build: ./chat-rails-api
+    container_name: chat-rails-api
     volumes:
       - .:/chat-rails-api
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -51,8 +52,18 @@ services:
       - redis
       - elasticsearch
 
+  # sidekiq:
+  #   build: ./chat-rails-api
+  #   command: sidekiq
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   volumes:
+  #     - .:/chat-rails-api
+
   go-chat-apis:
     build: ./go-chat-apis
+    container_name: go-chat-apis
     command: bash -c "go run cmd/main.go"
     depends_on:
       - "redis"

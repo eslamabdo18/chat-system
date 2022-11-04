@@ -19,6 +19,7 @@ type messageResponse struct {
 	Number     int64  `json:"number"`
 	ChatNumber int64  `json:"chat_number"`
 	AppToken   string `json:"app_token"`
+	Body       string `json:body`
 }
 
 type chatResponse struct {
@@ -110,7 +111,7 @@ func AddMessage(c *gin.Context) {
 		return
 	}
 	chatNumInt64, _ := strconv.ParseInt(chatNumber, 10, 64)
-	resp := messageResponse{Number: nextNum, ChatNumber: chatNumInt64, AppToken: token}
+	resp := messageResponse{Number: nextNum, ChatNumber: chatNumInt64, AppToken: token, Body: messageInput.Body}
 
 	c.JSON(http.StatusCreated, resp)
 }

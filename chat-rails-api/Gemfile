@@ -12,7 +12,7 @@ gem "mysql2", "~> 0.5"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
-gem 'sidekiq', '<7'
+gem 'sidekiq', '~> 6.5.8'
 gem "sinatra", github: "sinatra/sinatra"
 gem 'redis'
 gem 'redis-namespace'
