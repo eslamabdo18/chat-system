@@ -52,19 +52,18 @@ GET   api/v1/applications/:app_token/chats/:chat_number/messages/search?query={q
 
 ```
 
-### 💡 How to use
+## 💡 How to use
 
-> Create Application
+**Create Application**
 
-using cURL
 
-    curl -X POST http://localhost:3000/api/v1/applications -H "Content-Type: application/json"  -d  '{"name": "instabug"}
- 
- using httpPie
- 
+```
+# using cURL
+curl -X POST http://localhost:3000/api/v1/applications -H "Content-Type: application/json"  -d  '{"name": "instabug"}
 
-    http POST :3000/api/v1/applications name=instabug
-
+# using httpPie
+http POST :3000/api/v1/applications name=instabug
+```
 
 >   output:
 
@@ -76,18 +75,15 @@ using cURL
 	    "updated_at": "2022-11-04T12:44:13.722Z"
     }
 
-> create chat within this application
+**create chat within this application**
 
-using cURL
+```
+# using cURL
+curl -X POST http://localhost:8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats
 
-    curl -X POST http://localhost:8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats
-
- using httpPie
-
-    http POST :8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats 
-   
-   
-
+# using httpPie
+http POST :8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats 
+```
 > output:
 
     {
@@ -95,7 +91,8 @@ using cURL
         "number": 1
     }
 
-> now lets create message inside this chat
+
+**now lets create message inside this chat**
 ```
 http POST :8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats/1/messages body="chat system using rails and go"
 ```
@@ -109,7 +106,7 @@ http POST :8080/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats/1/messages bo
 }
 ```
 
-> lets try the search
+**lets try the search**
 ````
 #using curl 
 curl -X GET 'http://localhost:3000/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats/1/messages/search?query=rails'
@@ -130,7 +127,7 @@ http GET :3000/api/v1/applications/YdoWmSSQ3y66sQnafppQhF4n/chats/1/messages/sea
 ````
 
 
-## 🗒 Appendix
+## 🗒  Appendix
 In this project I use ``rails`` for creating all the applications and retrieving chats and messages data, for messages and chats creation i use Go (Gin)
 
 #### Main app (rails)
