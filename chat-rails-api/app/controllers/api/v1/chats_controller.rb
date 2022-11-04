@@ -9,7 +9,10 @@ class Api::V1::ChatsController < ApplicationController
 
     # GET /api/v1/applications/:app_token/chats/:number
     def show
-        @chat = @application.chats.find_by(number:chat_params[:number])
+        @chat = @application.chats.find_by!(number:chat_params[:number])
+        if @chat == nil
+            json_response({ message: "invalid chat id" }, :not_found)
+        end
         json_response(@chat)
     end
     private 

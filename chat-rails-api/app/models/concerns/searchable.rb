@@ -35,7 +35,6 @@ module Searchable
 
       private
       def reindex_model
-        put "tryinng to reindex"
         __elasticsearch__.index_document
         import(force: true)
       end
