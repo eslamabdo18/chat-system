@@ -1,6 +1,7 @@
 package chats
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,9 +23,9 @@ type chatResponse struct {
 type applicationResponse struct {
 	Name      string `json:"name"`
 	AppToken  string `json:"app_token"`
+	ChatCount int64  `json:"chat_count"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
-	ChatCount int64  `json:"chat_count"`
 }
 
 func GetChatNumber(token string) (int64, error) {
@@ -63,7 +64,8 @@ func GetChatNumber(token string) (int64, error) {
 			return -1, err
 		}
 		log.Println(key)
-		client.Set(key, res.ChatCount, 1)
+		log.Println(res)
+		client.Set(key, res.ChatCount, 0)
 
 	}
 	nextNum, err := client.Incr(key).Result()
@@ -78,10 +80,12 @@ func GetChatsCount(appToken string) (applicationResponse, error) {
 	var resp applicationResponse
 	url := viper.Get("CHAT_APP_END_POINT").(string) + "api/v1/applications/" + appToken
 	r, err := req.Get(url)
+	if r.Response().StatusCode != 200 {
+		return resp, errors.New("invalid chat")
+	}
 	if err != nil {
 		return resp, err
 	}
-
 	r.ToJSON(&resp)
 	return resp, nil
 }

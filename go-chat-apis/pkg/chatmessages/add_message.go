@@ -1,6 +1,7 @@
 package chatmessages
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -24,15 +25,16 @@ type messageResponse struct {
 
 type chatResponse struct {
 	Number       int64  `json:"number"`
+	MessageCount int64  `json:"message_count"`
 	CreatedAt    string `json:"created_at"`
 	UpdatedAt    string `json:"updated_at"`
-	MessageCount int64  `json:"message_count"`
 }
 
 func GetMsgNumber(token string, chatNumber string) (int64, error) {
 	// create the key
 	key := viper.Get("CHAT_NUM_REDIS_KEY").(string) + token + "_" + chatNumber
 	// get the redis client
+	// ctx := context.Background()
 	client, err := utlits.GetRedisClient()
 	// check if the client sussfully created
 	if err != nil {
@@ -61,8 +63,11 @@ func GetMsgNumber(token string, chatNumber string) (int64, error) {
 			defer lock.Unlock()
 			return -1, err
 		}
+		log.Println(res)
+		log.Println(res.MessageCount)
 		log.Println(key)
-		client.Set(key, res.MessageCount, 1)
+
+		client.Set(key, res.MessageCount, 0)
 
 	}
 	nextNum, err := client.Incr(key).Result()
@@ -77,10 +82,12 @@ func GetChat(appToken string, chatNumber string) (chatResponse, error) {
 	var resp chatResponse
 	url := viper.Get("CHAT_APP_END_POINT").(string) + "api/v1/applications/" + appToken + "/chats/" + chatNumber
 	r, err := req.Get(url)
+	if r.Response().StatusCode != 200 {
+		return resp, errors.New("invalid chat")
+	}
 	if err != nil {
 		return resp, err
 	}
-
 	r.ToJSON(&resp)
 	return resp, nil
 }

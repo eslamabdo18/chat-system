@@ -9,8 +9,15 @@ class Api::V1::MessagesController < ApplicationController
     end
     #GET /api/v1/applications/:app_token/chats/:number/messages/:number
     def show
-      @message = @chat.messages.find_by!(number:message_params[:number])
+      @message = @chat.messages.find_by!(number:params[:number])
       json_response(@message)
+    end
+
+    # PUT /api/v1/applications/:app_token/chats/:chat_number/messages/:messages_number
+    def update
+      @message = @chat.messages.find_by!(number:params[:number])
+      @message.update!(message_params)
+      head :no_content
     end
 
     def search
@@ -21,7 +28,7 @@ class Api::V1::MessagesController < ApplicationController
     private
     
     def message_params
-        params.permit(:number)
+        params.permit(:body)
     end
     def set_chat
       @application = Application.find_by!(app_token:params[:application_app_token])

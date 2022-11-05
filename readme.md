@@ -2,6 +2,7 @@
 
 Chatting system APIs using ruby on rails and go (gin)
 
+ 1. [APIs Documentation](https://documenter.getpostman.com/view/12162243/2s8YYEPQvR)
 
 ## 🧑🏽‍💻 Technologies used
 
@@ -27,9 +28,13 @@ and to run the specs
 
     docker exec -it chat-rails-api bundle exec rspec
 
+if you want to open sinatra to monitor the background task please click [here](http://localhost:3000/sidekiq) 
+
+>  the docker should be running so you can open sinatra
+
 ##  👀 APIs Routes 
 
-
+You can also find the postman collection from [here](https://documenter.getpostman.com/view/12162243/2s8YYEPQvR) 
 ```
 Method  URI Pattern
 ----  -----------
